@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.zerock.breply.mappers.BoardMapper">
+
+  <!-- list -->
+  <select id="getList" resultType="BoardListDTO">
+  select bno, title, writer, dueDate
+  from tbl_board
+  where bno > 0 and status = true
+  order by bno desc
+  limit #{skip}, #{size}
+  </select>
+
+  <!-- total -->
+  <select id="listCount" resultType="long">
+  select count(*)
+  from
+  (select bno from tbl_board
+  where bno > 0
+  limit #{countEnd}) board
+  </select>
+
+</mapper>
