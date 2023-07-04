@@ -288,3 +288,16 @@
     background-color: #26abff;
     border-color: #1aa6ff
 }
+
+.paging .active .btn.btn-primary {
+    background-color: #26abff;
+    border-color: #1aa6ff
+}
+
+.paging li .btn.btn-primary {border-radius:0;}
+.paging li:first-child .btn.btn-primary {border-radius:4px 0 0 4px;}
+.paging li:last-child .btn.btn-primary {border-radius:0 4px 4px 0;}
+
+li {
+    list-style: none;
+}

@@ -18,7 +18,7 @@
         <h2 class="mb-3">게시판 목록</h2>
         <!--/* 검색영역 */-->
         <!--/* <div class="mb-3 searchWrap">
-          <form action="/board/list" method="get" class="searchForm">
+          <form action="/board/list" method="get" class="actionForm">
             <input type="hidden" name="page" th:value="${pageRequestDTO.page}">
             <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
             <select name="type" class="form-select mb-3">
@@ -54,9 +54,17 @@
         </table>
         <div class="btn-toolbar" role="toolbar" style="justify-content: center;">
           <!--/* paging */-->
-          <div class="btn-group me-2 paging" role="group" aria-label="First group">
-            <a th:if="${boardList.prevBtn}" th:href="|list?page=${boardList.startNum - 1}|" class="btn btn-primary"><</a>
-          </div>
+          <ul class="btn-group me-2 paging" role="group" aria-label="First group">
+            <li th:if="${boardList.prevBtn}"><a th:href="${boardList.startNum - 1}" class="btn btn-primary"><</a></li>
+
+            <th:block th:each="i: ${#numbers.sequence(boardList.startNum, boardList.endNum)}">
+            <li th:class="${boardList.page == i} ? 'active' : ''">
+              <a th:href="${i}" class="btn btn-primary">[[${i}]]</a>
+            </li>
+            </th:block>
+
+            <li th:if="${boardList.nextBtn}"><a th:href="${boardList.endNum + 1}" class="btn btn-primary">></a></li>
+          </ul>
         </div>
         <div class="button_wrap">
           <a href="/board/register" class="btn btn-primary">등록</a>
