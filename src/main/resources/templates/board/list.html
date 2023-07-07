@@ -44,7 +44,7 @@
             </tr>
           </thead>
           <tbody class="boardRead">
-            <tr th:each="list : ${boardList.list}" th:data-bno="${list.bno}">
+            <tr th:each="list : ${boardList.list}">
               <td>[[${list.bno}]]</td>
               <td>[[${list.title}]]</td>
               <td>[[${list.writer}]]</td>

@@ -23,4 +23,27 @@
   limit #{countEnd}) board
   </select>
 
+  <!-- register -->
+  <insert id="register">
+  insert into tbl_board
+  (title, content, writer)
+  values (#{title}, #{content}, #{writer})
+  </insert>
+
+  <!-- read -->
+  <select id="getOne" resultType="BoardDTO">
+  select title, content, writer, dueDate, updateDate
+  from tbl_board
+  where bno = #{bno}
+  </select>
+
+  <!-- delete -->
+  <update id="delete">
+  update tbl_board
+  set
+    title = '', content = '', writer = '', dueDate = null, updateDate = now(),
+    status = false, replycnt = 0
+  where bno = #{bno}
+  </update>
+
 </mapper>
