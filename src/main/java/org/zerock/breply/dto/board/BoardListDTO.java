@@ -1,5 +1,9 @@
 package org.zerock.breply.dto.board;
 
+import java.time.LocalDateTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import groovy.transform.builder.Builder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +18,7 @@ public class BoardListDTO {
   private Integer bno;    //pk
   private String title;   //제목
   private String writer;  //작성자
-  private String dueDate; //등록일
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDateTime dueDate; //등록일
   private int replycnt;   //댓글수
 }

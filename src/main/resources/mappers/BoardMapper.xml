@@ -32,7 +32,7 @@
 
   <!-- read -->
   <select id="getOne" resultType="BoardDTO">
-  select title, content, writer, dueDate, updateDate
+  select bno, title, content, writer, updateDate, status
   from tbl_board
   where bno = #{bno}
   </select>

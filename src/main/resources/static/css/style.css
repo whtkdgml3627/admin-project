@@ -301,3 +301,6 @@
 li {
     list-style: none;
 }
+
+.board_list {table-layout: fixed;}
+.ellipsis {overflow:hidden;text-overflow:ellipsis;white-space: nowrap;width: 100%;padding: 0 10px;box-sizing: border-box;}

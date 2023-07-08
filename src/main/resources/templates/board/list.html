@@ -5,23 +5,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>게시판 리스트</title>
+  <title>Board List</title>
 </head>
 <body>
   
   <div class="container-fluid pt-4 px-4" layout:fragment="content">
-    [[${boardList}]]
-    <div>[[${pageRequestDTO}]]</div>
-    <!--/* [[${pageRequestDTO}]] */-->
+    <!--/* [[${boardList}]]
+    <div>[[${pageRequestDTO}]]</div> */-->
     <div class="col-sm-12 col-xl-12">
       <div class="bg-light rounded h-100 p-4">
-        <h2 class="mb-3">게시판 목록</h2>
+        <h2 class="mb-3">Board List</h2>
         <!--/* 검색영역 */-->
-        <!--/* <div class="mb-3 searchWrap">
+        <div class="mb-3 searchWrap">
           <form action="/board/list" method="get" class="actionForm">
             <input type="hidden" name="page" th:value="${pageRequestDTO.page}">
             <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
-            <select name="type" class="form-select mb-3">
+            <!--/* <select name="type" class="form-select mb-3">
               <option value="">선택해주세요</option>
               <option value="title" th:selected="${pageRequestDTO.type == 'title'}">제목</option>
               <option value="content" th:selected="${pageRequestDTO.type == 'content'}">내용</option>
@@ -30,25 +29,31 @@
             <input type="text" name="keyword" class="form-control mb-3" placeholder="검색어를 입력 해주세요." th:value="${pageRequestDTO.keyword}">
             <div class="button_wrap">
               <button type="submit" class="btn btn-primary btnSearch">검색</button>
-            </div>
+            </div> */-->
           </form>
-        </div> */-->
+        </div>
         <!--/* //검색영역 */-->
-        <table class="table table-hover">
+        <table class="table table-hover board_list">
+          <colgroup>
+            <col style="width:7%" />
+            <col style="width:60%" />
+            <col style="width:13%" />
+            <col style="width:20%" />
+          </colgroup>
           <thead>
             <tr>
               <th scope="col">No</th>
-              <th scope="col">제목</th>
-              <th scope="col">작성자</th>
-              <th scope="col">날짜</th>
+              <th scope="col">Title</th>
+              <th scope="col">Writer</th>
+              <th scope="col">Date</th>
             </tr>
           </thead>
-          <tbody class="boardRead">
+          <tbody>
             <tr th:each="list : ${boardList.list}">
               <td>[[${list.bno}]]</td>
-              <td>[[${list.title}]]</td>
+              <td><div class="ellipsis"><a th:href="@{|/board/read/${list.bno}?${pageRequestDTO.link}|}">[[${list.title}]]</a></div></td>
               <td>[[${list.writer}]]</td>
-              <td>[[${list.dueDate}]]</td>
+              <td>[[${#temporals.format(list.dueDate, 'yyyy-MM-dd')}]]</td>
             </tr>
           </tbody>
         </table>
@@ -67,13 +72,62 @@
           </ul>
         </div>
         <div class="button_wrap">
-          <a href="/board/register" class="btn btn-primary">등록</a>
+          <a href="/board/register" class="btn btn-primary">Register</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal alertModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">[[${message}]]</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <script layout:fragment="script" th:inline="javascript">
+    //선택자
+    const alertModal = new bootstrap.Modal(document.querySelector(".alertModal"))
+    const paging = document.querySelector(".paging")
+    const actionForm = document.querySelector(".actionForm")
+    const pageInput = actionForm.querySelector("input[name=page]")
+
+    paging.addEventListener("click", (e) => {
+      //이벤트 막기
+      e.preventDefault()
+      e.stopPropagation()
+
+      //target 찾기
+      const target = e.target
+      //console.log(target.tagName)
+
+      //A태그가 아니면 return
+      if(target.tagName !== "A"){
+        return
+      }
+
+      //page번호 설정
+      const pageNum = target.getAttribute("href")
+      //console.log(pageNum)
+
+      //input에 page변경 넘겨주기
+      pageInput.setAttribute("value", pageNum)
+      //actionForm action 변경
+      actionForm.setAttribute("action", "/board/list")
+      //submit
+      actionForm.submit()
+      
+
+    })
+
+    //등록, 삭제 Modal Show
+    if([[${message}]] != null){
+      alertModal.show()
+    }
 
 
   </script>

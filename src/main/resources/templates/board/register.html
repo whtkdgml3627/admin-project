@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Board Register</title>
+</head>
+<body>
+  <div class="container-fluid pt-4 px-4" layout:fragment="content">
+    <div class="col-sm-12 col-xl-12">
+      <div class="bg-light rounded h-100 p-4">
+        <h2 class="mb-4">Board Register</h2>
+        <form name="frm" method="post" class="formData">
+          <input type="hidden" name="bno">
+          <div class="mb-3">
+            <label for="boardTitle" class="form-label">Title</label>
+            <input type="text" name="title" class="form-control" id="boardTitle">
+          </div>
+          <div class="mb-3">
+            <label for="boardContent" class="form-label">Content</label>
+            <textarea name="content" class="form-control" id="boardContent" style="height:100px;resize:none;"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="boardWriter" class="form-label">Writer</label>
+            <input type="text" name="writer" class="form-control" id="boardWriter">
+          </div>
+        </form>
+        <div class="button_wrap">
+          <button type="button" class="btn btn-primary btnAdd">Register</button>
+          <a href="/board/list" class="btn btn-danger">Cancel</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script layout:fragment="script" th:inline="javascript">
+    const modalView = new bootstrap.Modal(document.querySelector(".modal"))
+    const modalPop = document.querySelector(".modal .modal-body")
+    const btnAdd = document.querySelector(".btnAdd")
+    //등록버튼 클릭
+    btnAdd.addEventListener("click", e => {
+      //console.log(frm.title.value);
+      if(frm.title.value == "") {
+        modalPop.innerHTML = "제목을 입력해주세요."
+        modalView.show()
+      }else if(frm.content.value == "") {
+        modalPop.innerHTML = "내용을 입력해주세요."
+        modalView.show()
+      }else if(frm.writer.value == "") {
+        modalPop.innerHTML = "작성자를 입력해주세요."
+        modalView.show()
+      }else {
+        frm.submit()
+      }
+    }, false)
+  </script>
+</body>
+</html>

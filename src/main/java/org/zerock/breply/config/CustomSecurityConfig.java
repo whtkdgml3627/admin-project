@@ -38,6 +38,11 @@ public class CustomSecurityConfig {
   @Bean
 	public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
 
+    //csrf 안쓰게
+    http.csrf(config -> {
+      config.disable();
+    });
+
     return http.build();
   }
 }
