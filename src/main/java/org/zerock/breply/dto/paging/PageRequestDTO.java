@@ -1,5 +1,23 @@
 package org.zerock.breply.dto.paging;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+/*
+ * 페이지 번호와 페이지 사이즈를 구하는 DTO
+ * 어노테이션은 get만 설정
+ * 페이지 번호 page
+ * 페이지 사이즈 size
+ * set 메소드 설정
+ * - page (음수 페이지 설정시 1페이지로 고정)
+ * - size (음수로 불러오거나 100 이상 설정 시 10으로 고정)
+ * limit 에 들어갈 skip 계산
+ * - page - 1 * size
+ * 다음페이지를 위한 count 구하기
+ * - page / 10.0(ceil로 올림처리) * 10*size
+ * getLink로 쿼리스트링 처리
+ */
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,6 +65,14 @@ public class PageRequestDTO {
     return ((int) Math.ceil(this.page / 10.0) * (10 * this.size)) + 1;
   }
 
+  //type 배열로 반환 처리
+  public String[] getTypes(){
+    if(this.type == null || this.type.isEmpty()){
+      return null;
+    }
+    return this.type.split("");
+  }
+
   public String getLink(){
 
     if(link == null){
@@ -56,6 +82,20 @@ public class PageRequestDTO {
       //page, size 쿼리스트링 전달
       strBuilder.append("page=" + this.page);
       strBuilder.append("&size=" + this.size);
+
+      //검색타입
+      if(type != null && type.length() > 0){
+        strBuilder.append("&type=" + this.type);
+      }
+
+      //검색어
+      if(keyword != null && keyword.length() > 0){
+        try {
+          strBuilder.append("&keyword=" + URLEncoder.encode(keyword,"UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+          e.printStackTrace();
+        }
+      }
 
       //toString으로 합친 문자열 String으로 반환
       link = strBuilder.toString();

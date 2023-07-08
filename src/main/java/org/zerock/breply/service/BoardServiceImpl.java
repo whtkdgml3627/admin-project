@@ -24,7 +24,6 @@ public class BoardServiceImpl implements BoardService {
   //list
   @Override
   public PageResponseDTO<BoardListDTO> getList(PageRequestDTO pageRequestDTO) {
-
     //list
     List<BoardListDTO> list = boardMapper.getList(pageRequestDTO);
     //total

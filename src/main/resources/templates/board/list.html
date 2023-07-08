@@ -20,16 +20,17 @@
           <form action="/board/list" method="get" class="actionForm">
             <input type="hidden" name="page" th:value="${pageRequestDTO.page}">
             <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
-            <!--/* <select name="type" class="form-select mb-3">
+            <select name="type" class="form-select mb-3">
               <option value="">선택해주세요</option>
-              <option value="title" th:selected="${pageRequestDTO.type == 'title'}">제목</option>
-              <option value="content" th:selected="${pageRequestDTO.type == 'content'}">내용</option>
-              <option value="writer" th:selected="${pageRequestDTO.type == 'writer'}">작성자 </option>
+              <option value="t" th:selected="${pageRequestDTO.type == 't'}">제목</option>
+              <option value="c" th:selected="${pageRequestDTO.type == 'c'}">내용</option>
+              <option value="w" th:selected="${pageRequestDTO.type == 'w'}">작성자 </option>
+              <option value="tc" th:selected="${pageRequestDTO.type == 'tc'}">제목+내용 </option>
             </select>
             <input type="text" name="keyword" class="form-control mb-3" placeholder="검색어를 입력 해주세요." th:value="${pageRequestDTO.keyword}">
             <div class="button_wrap">
               <button type="submit" class="btn btn-primary btnSearch">검색</button>
-            </div> */-->
+            </div>
           </form>
         </div>
         <!--/* //검색영역 */-->
@@ -51,7 +52,14 @@
           <tbody>
             <tr th:each="list : ${boardList.list}">
               <td>[[${list.bno}]]</td>
-              <td><div class="ellipsis"><a th:href="@{|/board/read/${list.bno}?${pageRequestDTO.link}|}">[[${list.title}]]</a></div></td>
+              <td>
+                <div class="board_title">
+                  <div class="ellipsis">
+                    <a th:href="@{|/board/read/${list.bno}?${pageRequestDTO.link}|}">[[${list.title}]]</a>
+                  </div>
+                  <span>([[${list.replycnt}]])</span>
+                </div>
+              </td>
               <td>[[${list.writer}]]</td>
               <td>[[${#temporals.format(list.dueDate, 'yyyy-MM-dd')}]]</td>
             </tr>
@@ -95,6 +103,9 @@
     const paging = document.querySelector(".paging")
     const actionForm = document.querySelector(".actionForm")
     const pageInput = actionForm.querySelector("input[name=page]")
+    const typeObj = actionForm.querySelector("select[name=type]")
+    const keywordObj = actionForm.querySelector("input[name=keyword]")
+    const btnSearch = document.querySelector(".btnSearch")
 
     paging.addEventListener("click", (e) => {
       //이벤트 막기
@@ -115,21 +126,35 @@
       //console.log(pageNum)
 
       //input에 page변경 넘겨주기
-      pageInput.setAttribute("value", pageNum)
+      pageInput.value = pageNum
       //actionForm action 변경
       actionForm.setAttribute("action", "/board/list")
       //submit
       actionForm.submit()
-      
-
     })
+
+    //검색 버튼
+    btnSearch.addEventListener("click", e => {
+      //이벤트 막기
+      e.preventDefault()
+      e.stopPropagation()
+
+      //검색타입, 키워드 입력 안되었을 시 return
+      if(typeObj.options[typeObj.selectedIndex].value === "" && keywordObj.value !== ""){
+        alert("검색 조건을 선택해주세요")
+        return
+      }
+
+      //검색 하고나면 page는 무조건 1페이지
+      pageInput.value = 1
+
+      actionForm.submit()
+    }, false)
 
     //등록, 삭제 Modal Show
     if([[${message}]] != null){
       alertModal.show()
     }
-
-
   </script>
   
 </body>

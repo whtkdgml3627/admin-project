@@ -7,10 +7,25 @@
 
   <!-- list -->
   <select id="getList" resultType="BoardListDTO">
-  select bno, title, writer, dueDate
-  from tbl_board
-  where bno > 0 and status = true
-  order by bno desc
+  select b.bno, b.title, b.writer, b.dueDate, count(r.rno) as replycnt
+  from tbl_board b left join tbl_reply r
+  on r.bno = b.bno
+  where b.bno > 0 and status = true
+  <if test="keyword != null and type != ''">
+    <trim prefix="and (" prefixOverrides="or" suffix=")">
+      <if test='type == "t"'>
+        or title like concat('%', #{keyword}, '%')
+      </if>
+      <if test='type == "c"'>
+        or content like concat('%', #{keyword}, '%')
+      </if>
+      <if test='type == "w"'>
+        or writer like concat('%', #{keyword}, '%')
+      </if>
+    </trim>
+  </if>
+  group by b.bno
+  order by b.bno desc
   limit #{skip}, #{size}
   </select>
 
@@ -20,6 +35,19 @@
   from
   (select bno from tbl_board
   where bno > 0
+  <if test="keyword != null and type != ''">
+    <trim prefix="and (" prefixOverrides="or" suffix=")">
+      <if test='type == "t"'>
+        or title like concat('%', #{keyword}, '%')
+      </if>
+      <if test='type == "c"'>
+        or content like concat('%', #{keyword}, '%')
+      </if>
+      <if test='type == "w"'>
+        or writer like concat('%', #{keyword}, '%')
+      </if>
+    </trim>
+  </if>
   limit #{countEnd}) board
   </select>
 
