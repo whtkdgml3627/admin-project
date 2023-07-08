@@ -3,7 +3,9 @@ package org.zerock.breply.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.zerock.breply.dto.board.BoardDTO;
 import org.zerock.breply.dto.board.BoardListDTO;
+import org.zerock.breply.dto.board.BoardRegisterDTO;
 import org.zerock.breply.dto.paging.PageRequestDTO;
 import org.zerock.breply.dto.paging.PageResponseDTO;
 import org.zerock.breply.mappers.BoardMapper;
@@ -33,6 +35,34 @@ public class BoardServiceImpl implements BoardService {
       .total(total)
       .pageRequestDTO(pageRequestDTO)
       .build();
+  }
+
+  //register
+  @Override
+  public void register(BoardRegisterDTO registerDTO) {
+    //등록만 전달
+    boardMapper.register(registerDTO);
+  }
+
+  //read
+  @Override
+  public BoardDTO getOne(Integer bno) {
+    //조회만 전달
+    return boardMapper.getOne(bno);
+  }
+
+  //delete
+  @Override
+  public void delete(Integer bno) {
+    //삭제 업데이트
+    boardMapper.delete(bno);
+  }
+
+  //modify
+  @Override
+  public void modify(BoardDTO boardDTO) {
+    //수정 업데이트
+    boardMapper.modify(boardDTO);
   }
   
 }

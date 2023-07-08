@@ -46,4 +46,12 @@
   where bno = #{bno}
   </update>
 
+  <!-- modify -->
+  <update id="modify">
+  update tbl_board
+  set
+    title = #{title}, content = #{content}, updateDate = now()
+  where bno = #{bno}
+  </update>
+
 </mapper>

@@ -66,6 +66,22 @@ public class BoardMapperTests {
     log.info(boardMapper.delete(bno));
   }
 
+  //modify test
+  @Test
+  public void testBoardMOdify(){
+
+    BoardDTO boardDTO = BoardDTO.builder()
+      .bno(720905)
+      .title("Mapper Modify Title")
+      .content("Mapper Modify Content")
+      .build();
+      
+    log.info("=====================================================================");
+    log.info("=====================================================================");
+    log.info(boardMapper.modify(boardDTO));
+
+  }
+
   //DB연결 시간 체크
   // @Test
   // public void testGetTime(){

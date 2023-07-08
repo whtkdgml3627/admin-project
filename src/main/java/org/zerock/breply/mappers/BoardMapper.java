@@ -23,9 +23,9 @@ public interface BoardMapper {
 
   //delete
   int delete(Integer bno);
-  
-  
 
+  //modify
+  int modify(BoardDTO boardDTO);
 
   //DB연결 시간 체크
   // @Select("select now()")
