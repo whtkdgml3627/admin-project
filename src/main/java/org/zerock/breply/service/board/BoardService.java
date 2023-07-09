@@ -1,4 +1,4 @@
-package org.zerock.breply.service;
+package org.zerock.breply.service.board;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.breply.dto.board.BoardDTO;

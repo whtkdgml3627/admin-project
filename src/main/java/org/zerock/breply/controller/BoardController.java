@@ -17,7 +17,7 @@ import org.zerock.breply.dto.board.BoardListDTO;
 import org.zerock.breply.dto.board.BoardRegisterDTO;
 import org.zerock.breply.dto.paging.PageRequestDTO;
 import org.zerock.breply.dto.paging.PageResponseDTO;
-import org.zerock.breply.service.BoardService;
+import org.zerock.breply.service.board.BoardService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.zerock.breply.dto.board.BoardDTO;
 import org.zerock.breply.dto.board.BoardRegisterDTO;
 import org.zerock.breply.dto.paging.PageRequestDTO;
+import org.zerock.breply.service.board.BoardService;
 
 import lombok.extern.log4j.Log4j2;
 

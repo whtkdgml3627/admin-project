@@ -1,4 +1,4 @@
-package org.zerock.breply.service;
+package org.zerock.breply.service.board;
 
 import java.util.List;
 

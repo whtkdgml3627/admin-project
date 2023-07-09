@@ -12,6 +12,8 @@ public interface ReplyMapper {
   List<ReplyDTO> getList(
     @Param("bno") Integer bno, @Param("pr") PageRequestDTO pageRequestDTO
   );
+  //total
+  int getBnoCount(Integer bno);
 
   /* gno가 0일 때 실행하는 영역 */
   //register 댓글
