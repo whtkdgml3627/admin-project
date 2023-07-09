@@ -62,6 +62,7 @@ public class ReplyServiceImpl implements ReplyService {
       replyMapper.updateReplyGno(rno);
       result = rno;
     }else{
+      //대댓글일때
       int count = replyMapper.registerReplyChild(replyDTO);
       
       //정상 등록 아닐 시 예외처리

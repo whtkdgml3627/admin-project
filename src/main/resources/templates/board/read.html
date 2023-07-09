@@ -30,6 +30,35 @@
       </div>
     </div>
 
+    <div class="col-sm-12 col-md-6 col-xl-12">
+      <div class="h-100 bg-light rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h6 class="mb-0">Reply Register</h6>
+        </div>
+        <div class="mb-3 replyRegister">
+          <input type="hidden" name="bno" th:value="${read.bno}">
+          <input type="hidden" name="replyer" value="Josanghee">
+          <input type="text" name="reply" class="form-control">
+        </div>
+        <div class="button_wrap">
+          <button class="btn btn-primary btnRegister">Reply Register</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-xl-12">
+      <div class="h-100 bg-light rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h6 class="mb-0">Reply</h6>
+        </div>
+        <div class="replyWrap"></div>
+        <div class="btn-toolbar" role="toolbar" style="justify-content: center;">
+          <!--/* paging */-->
+          <ul class="btn-group me-2 paging replyPaging" role="group" aria-label="First group"></ul>
+        </div>
+      </div>
+    </div>
+
     <div class="modal alertModal" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -41,21 +70,144 @@
       </div>
     </div>
 
+    <div class="modal replyModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            Reply Register
+          </div>
+          <div class="modal-body replyRegister2">
+            <input type="hidden" name="bno" th:value="${read.bno}">
+            <input type="hidden" name="replyer" value="Josanghee">
+            <input type="text" name="reply" class="form-control">
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary btnRegister2">Reply Register</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/replyAxios.js"></script>
+
   </div>
   <script layout:fragment="script" th:inline="javascript">
     //변수, 선택자
-    const {status} = [[${read}]]
+    const realPath = "http://" + window.location.host;
+    const {bno, status} = [[${read}]]
     const alertModal = new bootstrap.Modal(document.querySelector(".alertModal"))
+    const replyModal = new bootstrap.Modal(document.querySelector(".replyModal"))
+    const replyWrap = document.querySelector(".replyWrap")
+    const replyPaging = document.querySelector(".replyPaging")
+    const replyRegister = document.querySelector(".replyRegister")
+    const replyRegister2 = document.querySelector(".replyRegister2")
+    const btnRegister = document.querySelector(".btnRegister")
+    const btnRegister2 = document.querySelector(".btnRegister2")
 
     //삭제된 게시물은 list로 return처리
     if(!status){
       alert("삭제된 게시물 입니다.");
-      window.location.href = "http://" + window.location.host + "/board/list"
+      window.location.href = realPath + "/board/list"
     }
 
+    //수정된 게시물 modal view
     if([[${message}]] != null){
       alertModal.show()
     }
+
+    //댓글
+    //댓글 등록
+    btnRegister.addEventListener("click", (e) => {
+      //이벤트 막기
+      e.preventDefault()
+      e.stopPropagation()
+
+      //value 가져오기
+      const bno = replyRegister.querySelector("input[name=bno]").value
+      const reply = replyRegister.querySelector("input[name=reply]").value
+      const replyer = replyRegister.querySelector("input[name=replyer]").value
+      //console.log(bno, reply, replyer)
+
+      if(reply === ''){
+        alert("댓글 내용을 입력해주세요.")
+        return
+      }
+
+      //객체로 만들기
+      const temp = {bno, reply, replyer}
+      //console.log(temp)
+
+      postRegister(temp).then(result => {
+        console.log(result)
+        replyRegister.querySelector("input[name=reply]").value = ""
+        getListDefault()
+      })
+    }, false)
+
+    //대댓글 모달 보여주기
+    replyWrap.addEventListener("click", (e) => {
+      //event 막기
+      e.preventDefault()
+      e.stopPropagation()
+
+      //target 찾기
+      const target = e.target
+      const result = target.getAttribute("data-reply")
+      const gno = target.getAttribute("data-gno")
+      //console.log(target.getAttribute("data-reply"))
+
+      if(result === "reply"){
+        replyModal.show()
+        replyRegister2.innerHTML += `<input type="hidden" name="gno" value="${gno}">`
+      }
+    }, false)
+
+    //대댓글 등록
+    btnRegister2.addEventListener("click", (e) => {
+      //이벤트 막기
+      e.preventDefault()
+      e.stopPropagation()
+
+      //value 가져오기
+      const bno = replyRegister2.querySelector("input[name=bno]").value
+      const reply = replyRegister2.querySelector("input[name=reply]").value
+      const replyer = replyRegister2.querySelector("input[name=replyer]").value
+      const gno = replyRegister2.querySelector("input[name=gno]").value
+      //console.log(bno, reply, replyer)
+
+      if(reply === ''){
+        alert("댓글 내용을 입력해주세요.")
+        return
+      }
+
+      //객체로 만들기
+      const temp = {bno, reply, replyer, gno}
+      //console.log(temp)
+
+      postRegister(temp).then(result => {
+        console.log(result)
+        replyRegister.querySelector("input[name=reply]").value = ""
+        getListDefault()
+        replyModal.hide()
+      })
+    }, false)
+
+
+    //최초 list 불러오기
+    
+      
+    window.addEventListener("load", function() {
+      setTimeout(function(){
+        const replyEndNum = replyPaging.querySelector("input[name=replyEndNum]").value
+        console.log(replyEndNum)
+      
+      },20)
+    })
+
+    getListDefault(2)
+    // /댓글
+
   </script>
 </body>
 </html>
