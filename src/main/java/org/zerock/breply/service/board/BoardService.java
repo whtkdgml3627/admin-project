@@ -25,4 +25,7 @@ public interface BoardService {
   //modify
   void modify(BoardDTO boardDTO);
 
+  //viewCount
+  void viewCount(Integer bno);
+
 }

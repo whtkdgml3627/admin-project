@@ -27,6 +27,9 @@ public interface BoardMapper {
   //modify
   int modify(BoardDTO boardDTO);
 
+  //viewcnt
+  int viewCount(Integer bno);
+
   //DB연결 시간 체크
   // @Select("select now()")
   // String getTime();

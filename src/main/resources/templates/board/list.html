@@ -10,8 +10,8 @@
 <body>
   
   <div class="container-fluid pt-4 px-4" layout:fragment="content">
-    <!--/* [[${boardList}]]
-    <div>[[${pageRequestDTO}]]</div> */-->
+    [[${boardList}]]
+    <!--/* <div>[[${pageRequestDTO}]]</div> */-->
     <div class="col-sm-12 col-xl-12">
       <div class="bg-light rounded h-100 p-4">
         <h2 class="mb-3">Board List</h2>
@@ -47,6 +47,7 @@
               <th scope="col">Title</th>
               <th scope="col">Writer</th>
               <th scope="col">Date</th>
+              <th scope="col">조회수</th>
             </tr>
           </thead>
           <tbody>
@@ -62,6 +63,7 @@
               </td>
               <td>[[${list.writer}]]</td>
               <td>[[${#temporals.format(list.dueDate, 'yyyy-MM-dd')}]]</td>
+              <td>[[${list.viewcnt}]]</td>
             </tr>
           </tbody>
         </table>

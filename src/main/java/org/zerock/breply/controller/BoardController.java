@@ -18,7 +18,10 @@ import org.zerock.breply.dto.board.BoardRegisterDTO;
 import org.zerock.breply.dto.paging.PageRequestDTO;
 import org.zerock.breply.dto.paging.PageResponseDTO;
 import org.zerock.breply.service.board.BoardService;
+import org.zerock.breply.util.ManegementCookie;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -30,6 +33,7 @@ public class BoardController {
   
   //서비스 선언 의존성 주입
   private final BoardService boardService;
+  private final ManegementCookie manegementCookie;
 
   //list
   @GetMapping("/list")
@@ -66,9 +70,13 @@ public class BoardController {
   //read
   @GetMapping("/read/{bno}")
   public String getRead(
-    PageRequestDTO pageRequestDTO, @PathVariable("bno") Integer bno, Model model
+    PageRequestDTO pageRequestDTO, @PathVariable("bno") Integer bno, HttpServletRequest request, HttpServletResponse response, Model model
   ){
     log.info("get | read..........................");
+    if(manegementCookie.createCookie(request, response, bno)){
+      boardService.viewCount(bno);
+      log.info("Cookie Check");
+    }
     //DTO 로 선언
     BoardDTO boardDTO = boardService.getOne(bno);
 

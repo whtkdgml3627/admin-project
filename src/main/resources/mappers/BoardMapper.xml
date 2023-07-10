@@ -7,8 +7,33 @@
 
   <!-- list -->
   <select id="getList" resultType="BoardListDTO">
-  select b.bno, b.title, b.writer, b.dueDate, count(r.rno) as replycnt
-  from tbl_board b left join tbl_reply r
+  select b.bno, b.title, b.writer, b.dueDate, count(r.rno) as replycnt, b.viewcnt
+  from tbl_board b
+  left join tbl_reply r
+  on r.bno = b.bno
+  where b.bno > 0 and status = true
+  <if test="keyword != null and types != null">
+    <trim prefix="and (" prefixOverrides="or" suffix=")">
+      <foreach collection="types" item="type" separator=" OR ">
+        <if test='type == "t"'>
+          title like concat('%', #{keyword}, '%')
+        </if>
+        <if test='type == "c"'>
+          content like concat('%', #{keyword}, '%')
+        </if>
+        <if test='type == "w"'>
+          writer like concat('%', #{keyword}, '%')
+        </if>
+      </foreach>
+    </trim>
+  </if>
+  group by b.bno
+  order by b.bno desc
+  limit #{skip}, #{size} 
+
+  <!-- select b.bno, b.title, b.writer, b.dueDate, count(r.rno) as replycnt
+  from tbl_board b
+  left join tbl_reply r
   on r.bno = b.bno
   where b.bno > 0 and status = true
   <if test="keyword != null and type != ''">
@@ -26,7 +51,7 @@
   </if>
   group by b.bno
   order by b.bno desc
-  limit #{skip}, #{size}
+  limit #{skip}, #{size} -->
   </select>
 
   <!-- total -->
@@ -35,17 +60,19 @@
   from
   (select bno from tbl_board
   where bno > 0
-  <if test="keyword != null and type != ''">
+  <if test="keyword != null and types != null">
     <trim prefix="and (" prefixOverrides="or" suffix=")">
-      <if test='type == "t"'>
-        or title like concat('%', #{keyword}, '%')
-      </if>
-      <if test='type == "c"'>
-        or content like concat('%', #{keyword}, '%')
-      </if>
-      <if test='type == "w"'>
-        or writer like concat('%', #{keyword}, '%')
-      </if>
+      <foreach collection="types" item="type" separator=" OR ">
+        <if test='type == "t"'>
+          title like concat('%', #{keyword}, '%')
+        </if>
+        <if test='type == "c"'>
+          content like concat('%', #{keyword}, '%')
+        </if>
+        <if test='type == "w"'>
+          writer like concat('%', #{keyword}, '%')
+        </if>
+      </foreach>
     </trim>
   </if>
   limit #{countEnd}) board
@@ -79,6 +106,13 @@
   update tbl_board
   set
     title = #{title}, content = #{content}, updateDate = now()
+  where bno = #{bno}
+  </update>
+
+  <update id="viewCount">
+  update tbl_board
+  set
+    viewcnt = viewcnt + 1
   where bno = #{bno}
   </update>
 
