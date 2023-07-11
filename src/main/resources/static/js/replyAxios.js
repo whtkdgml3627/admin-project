@@ -1,7 +1,7 @@
 //댓글 비동기통신처리
 //list
-const getList = async(page) => {
-  const res = await axios.get(`${realPath}/replies/${bno}/list?page=${page}`)
+const getList = async(replyLast = false, page = 1) => {
+  const res = await axios.get(`${realPath}/replies/${bno}/list?page=${page}&replyLast=${replyLast}`)
   return res.data
 }
 
@@ -12,11 +12,11 @@ const postRegister = async(data) => {
 }
 
 //list 함수로 선언
-const getListDefault = (page) => {
-  getList(page).then(arr => {
+const getListDefault = (replyLast, page) => {
+  getList( replyLast, page).then(arr => {
     let replyStr = ""
     let replyPagingStr = ""
-    console.log(arr)
+    //console.log(arr)
     for(let i = 0; i < arr.list.length; i++){
       const {reply, replyer, replyDate, step, gno} = arr.list[i]
       replyStr += `
@@ -33,7 +33,8 @@ const getListDefault = (page) => {
       `
     }
 
-    const {page, startNum, endNum, prevBtn, nextBtn, total} = arr
+    const {page, size, startNum, endNum, prevBtn, nextBtn, replyLast, total} = arr
+    console.log(arr)
 
     prevBtn === true ? replyPagingStr += `<li><button data-page="${startNum - 1} class="btn btn-primary"><</button></li>` : ""
 
@@ -46,8 +47,8 @@ const getListDefault = (page) => {
     }
 
     nextBtn === true ? replyPagingStr += `<li><button data-page="${endNum + 1} class="btn btn-primary">></button></li>` : ""
-    replyPagingStr += `<input type="hidden" name="replyEndNum" value="${endNum}">`
 
+    //console.log(replyLast = Math.ceil((page * size) / total) === 1 ? true : false)
     //console.log(replyStr)
     //console.log(replyPagingStr)
     replyWrap.innerHTML = replyStr

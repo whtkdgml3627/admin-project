@@ -11,7 +11,7 @@
       replyDate, gno
   from tbl_reply
   where bno = #{bno} and rno > 0
-  order by rno asc, gno asc
+  order by gno asc, rno asc
   limit #{pr.skip}, #{pr.size}
   </select>
 

@@ -64,6 +64,7 @@ public class BoardServiceImpl implements BoardService {
     boardMapper.modify(boardDTO);
   }
 
+  //조회수 업데이트
   @Override
   public void viewCount(Integer bno) {
     boardMapper.viewCount(bno);

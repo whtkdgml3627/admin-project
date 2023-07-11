@@ -36,6 +36,7 @@ public class PageRequestDTO {
   private String type;      //검색type
   private String keyword;   //검색어
   private String link;      //검색조건, 페이지, 사이즈 통합
+  private boolean replyLast;     //댓글 페이징 마지막 페이지 유무
 
   //page번호 음수값 제외처리
   public void setPage(int page){

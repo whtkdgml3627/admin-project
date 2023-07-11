@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="col-sm-12 col-md-6 col-xl-12">
+    <div class="col-sm-12 col-md-12 col-xl-12">
       <div class="h-100 bg-light rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-3">
           <h6 class="mb-0">Reply Register</h6>
@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <div class="col-sm-12 col-md-6 col-xl-12">
+    <div class="col-sm-12 col-md-12 col-xl-12">
       <div class="h-100 bg-light rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-3">
           <h6 class="mb-0">Reply</h6>
@@ -80,6 +80,7 @@
             <input type="hidden" name="bno" th:value="${read.bno}">
             <input type="hidden" name="replyer" value="Josanghee">
             <input type="text" name="reply" class="form-control">
+            <div class="replyGno"></div>
           </div>
           <div class="modal-footer">
             <button class="btn btn-primary btnRegister2">Reply Register</button>
@@ -102,6 +103,7 @@
     const replyPaging = document.querySelector(".replyPaging")
     const replyRegister = document.querySelector(".replyRegister")
     const replyRegister2 = document.querySelector(".replyRegister2")
+    const replyGno = replyRegister2.querySelector(".replyGno")
     const btnRegister = document.querySelector(".btnRegister")
     const btnRegister2 = document.querySelector(".btnRegister2")
 
@@ -138,12 +140,13 @@
       const temp = {bno, reply, replyer}
       //console.log(temp)
 
-      postRegister(temp).then(result => {
-        console.log(result)
+      postRegister(temp).then(data => {
+        alert(data.result + "번 댓글이 등록 되었습니다.")
         replyRegister.querySelector("input[name=reply]").value = ""
         getListDefault()
       })
     }, false)
+    // /댓글 등록
 
     //대댓글 모달 보여주기
     replyWrap.addEventListener("click", (e) => {
@@ -159,9 +162,11 @@
 
       if(result === "reply"){
         replyModal.show()
-        replyRegister2.innerHTML += `<input type="hidden" name="gno" value="${gno}">`
+        replyRegister2.querySelector("input[name=reply]").value = ""
+        replyGno.innerHTML = `<input type="hidden" name="gno" value="${gno}">`
       }
     }, false)
+    // /대댓글 모달 보여주기
 
     //대댓글 등록
     btnRegister2.addEventListener("click", (e) => {
@@ -185,27 +190,36 @@
       const temp = {bno, reply, replyer, gno}
       //console.log(temp)
 
-      postRegister(temp).then(result => {
-        console.log(result)
+      postRegister(temp).then(data => {
+        alert(data.result + "번 댓글이 등록 되었습니다.")
         replyRegister.querySelector("input[name=reply]").value = ""
         getListDefault()
         replyModal.hide()
       })
     }, false)
+    // /대댓글 등록
 
+    //댓글 페이징 처리
+    replyPaging.addEventListener("click", (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+
+      //target 찾기
+      const target = e.target
+      //console.log(target)
+
+      //paging 번호 찾기
+      const pageNum = target.getAttribute("data-page")
+      //console.log(pageNum)
+
+      //페이징 변경해주기
+      getListDefault(true, pageNum)
+
+    }, false)
+    // /댓글 페이징 처리
 
     //최초 list 불러오기
-    
-      
-    window.addEventListener("load", function() {
-      setTimeout(function(){
-        const replyEndNum = replyPaging.querySelector("input[name=replyEndNum]").value
-        console.log(replyEndNum)
-      
-      },20)
-    })
-
-    getListDefault(2)
+    getListDefault()
     // /댓글
 
   </script>

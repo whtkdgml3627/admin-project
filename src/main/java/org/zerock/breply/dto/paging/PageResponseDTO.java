@@ -17,6 +17,7 @@ public class PageResponseDTO<E> {
   private int endNum;       //끝 페이지 번호
   private boolean prevBtn;  //이전 버튼 유무
   private boolean nextBtn;  //다음 버튼 유무
+  private boolean replyLast;//댓글 마지막 페이징 유무
 
   @Builder(builderMethodName = "withAll")
   public PageResponseDTO(
@@ -26,6 +27,7 @@ public class PageResponseDTO<E> {
     this.total = total;
     this.page = pageRequestDTO.getPage();
     this.size = pageRequestDTO.getSize();
+    this.replyLast = pageRequestDTO.isReplyLast();
 
     //페이징 계산
     //시작 페이지 번호 계산
