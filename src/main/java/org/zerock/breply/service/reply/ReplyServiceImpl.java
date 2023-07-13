@@ -73,7 +73,7 @@ public class ReplyServiceImpl implements ReplyService {
   @Override
   public Integer register(ReplyDTO replyDTO) {
     Integer result = null;
-    Integer gno = replyDTO.getGno();
+    int gno = replyDTO.getGno();
 
     //댓글일 때
     if(gno == 0){

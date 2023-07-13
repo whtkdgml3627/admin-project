@@ -7,41 +7,59 @@
 
   <!-- list -->
   <select id="getList" resultType="ReplyDTO">
-  select if(rno = gno, 0, 1) as step, rno, bno, reply, replyer,
-      replyDate, gno
-  from tbl_reply
-  where bno = #{bno} and rno > 0
-  order by gno asc, rno asc
-  limit #{pr.skip}, #{pr.size}
+    select if(rno = gno, 0, 1) as step, rno, bno, reply, replyer,
+        replyDate, gno
+    from tbl_reply
+    where bno = #{bno} and rno > 0
+    order by gno asc, rno asc
+    limit #{pr.skip}, #{pr.size}
   </select>
 
   <!-- total -->
   <select id="getBnoCount" resultType="int">
-  select count(rno) from tbl_reply where bno = #{bno}
+    select count(rno) from tbl_reply where bno = #{bno}
   </select>
 
   <!-- register 댓글 -->
   <insert id="registerReply">
-  insert into tbl_reply (bno, reply, replyer)
-  values (#{bno}, #{reply}, #{replyer})
-    <!-- 마지막 rno -->
-    <selectKey resultType="int" keyProperty="rno" order="AFTER">
-      select last_insert_id()
-    </selectKey>
+    insert into tbl_reply (bno, reply, replyer)
+    values (#{bno}, #{reply}, #{replyer})
+      <!-- 마지막 rno -->
+      <selectKey resultType="int" keyProperty="rno" order="AFTER">
+        select last_insert_id()
+      </selectKey>
   </insert>
 
   <!-- register 댓글 gno에 rno대입 -->
   <update id="updateReplyGno">
-  update tbl_reply set gno = #{rno} where rno = #{rno}
+    update tbl_reply set gno = #{rno} where rno = #{rno}
+  </update>
+  <!-- //register 댓글 -->
+
+  <!-- register 대댓글 -->
+  <insert id="registerReplyChild">
+    insert into tbl_reply (bno, reply, replyer, gno)
+    values (#{bno}, #{reply}, #{replyer}, #{gno})
+      <!-- 마지막 rno -->
+      <selectKey resultType="int" keyProperty="rno" order="AFTER">
+        select last_insert_id()
+      </selectKey>
+  </insert>
+
+  <!-- delete 댓글 -->
+  <update id="delete">
+    update tbl_reply
+      set
+    reply = '삭제된 댓글 입니다', replyDate = now()
+    where rno = #{rno}
   </update>
 
-  <insert id="registerReplyChild">
-  insert into tbl_reply (bno, reply, replyer, gno)
-  values (#{bno}, #{reply}, #{replyer}, #{gno})
-    <!-- 마지막 rno -->
-    <selectKey resultType="int" keyProperty="rno" order="AFTER">
-      select last_insert_id()
-    </selectKey>
-  </insert>
+  <!-- modify 댓글 -->
+  <update id="modify">
+    update tbl_reply
+    set
+      reply = #{reply}, replyDate = now()
+    where rno = #{rno}
+  </update>
 
 </mapper>

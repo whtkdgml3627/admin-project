@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.breply.dto.paging.PageRequestDTO;
 import org.zerock.breply.dto.reply.ReplyDTO;
@@ -89,7 +90,32 @@ public class ReplyMapperTests {
     if(insertCount != 1){
       throw new RuntimeException("INSERT FAIL");
     }
+  }
 
+  //delete test
+  @Test
+  @Transactional
+  public void testReplyDelete(){
+    Integer rno = 43;
+
+    log.info("=====================================================================");
+    log.info("=====================================================================");
+    replyMapper.delete(rno);
+  }
+
+  //modify test
+  @Test
+  @Transactional
+  @Commit
+  public void testReplyModify(){
+    ReplyDTO replyDTO = ReplyDTO.builder()
+      .rno(44)
+      .reply("0713 Reply Modify 20:47")
+      .build();
+
+    log.info("=====================================================================");
+    log.info("=====================================================================");
+    replyMapper.modify(replyDTO);
   }
   
 }

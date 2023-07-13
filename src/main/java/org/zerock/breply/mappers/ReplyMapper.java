@@ -28,4 +28,10 @@ public interface ReplyMapper {
   int registerReplyChild(ReplyDTO replyDTO);
   /* //gno가 0이 아닐 때 실행하는 영역 */
 
+  //delete
+  int delete(Integer rno);
+
+  //modify
+  int modify(ReplyDTO replyDTO);
+
 }
