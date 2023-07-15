@@ -46,11 +46,18 @@
       </selectKey>
   </insert>
 
+  <!-- read 댓글 -->
+  <select id="readOne">
+    select rno, bno, reply, replyer, status
+    from tbl_reply
+    where rno = #{rno}
+  </select>
+
   <!-- delete 댓글 -->
   <update id="delete">
     update tbl_reply
       set
-    reply = '삭제된 댓글 입니다', replyDate = now()
+    reply = '삭제된 댓글 입니다', replyDate = now(), status = false
     where rno = #{rno}
   </update>
 

@@ -28,6 +28,9 @@ public interface ReplyMapper {
   int registerReplyChild(ReplyDTO replyDTO);
   /* //gno가 0이 아닐 때 실행하는 영역 */
 
+  //read
+  ReplyDTO readOne(Integer rno);
+
   //delete
   int delete(Integer rno);
 

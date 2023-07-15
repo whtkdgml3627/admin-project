@@ -57,5 +57,38 @@ public class ReplyServiceTests {
     log.info("=====================================================================");
     log.info(replyService.register(replyDTO));
   }
+
+  //read test
+  @Test
+  public void testReadOne(){
+    Integer rno = 45;
+
+    log.info("=====================================================================");
+    log.info("=====================================================================");
+    log.info(replyService.readOne(rno));
+  }
+
+  //delete test
+  @Test
+  public void testReplyDelete(){
+    Integer rno = 44;
+
+    log.info("=====================================================================");
+    log.info("=====================================================================");
+    replyService.delete(rno);
+  }
+
+  //modify test
+  @Test
+  public void testReplyModify(){
+    ReplyDTO replyDTO = ReplyDTO.builder()
+      .rno(45)
+      .reply("Reply Service Modify 0715")
+      .build();
+
+    log.info("=====================================================================");
+    log.info("=====================================================================");
+    replyService.modify(replyDTO);
+  }
   
 }

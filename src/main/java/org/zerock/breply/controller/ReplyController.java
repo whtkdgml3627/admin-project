@@ -4,12 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.zerock.breply.dto.paging.PageRequestDTO;
 import org.zerock.breply.dto.paging.PageResponseDTO;
 import org.zerock.breply.dto.reply.ReplyDTO;
@@ -21,7 +16,7 @@ import lombok.extern.log4j.Log4j2;
 @RestController
 @Log4j2
 @RequiredArgsConstructor
-@RequestMapping("/replies")
+@RequestMapping("/api/replies/")
 public class ReplyController {
 
   //custom 예외처리
@@ -60,5 +55,39 @@ public class ReplyController {
     Integer rno = replyService.register(replyDTO);
 
     return Map.of("result", rno);
+  }
+
+  //read
+  @GetMapping("read/{rno}")
+  public ReplyDTO readOne(
+    @PathVariable("rno") Integer rno
+  ){
+    log.info("get | replyRead-----------------------------");
+
+    return replyService.readOne(rno);
+  }
+
+  //delete
+  @DeleteMapping("delete/{rno}")
+  public Map<String, Integer> delete(
+    @PathVariable("rno") Integer rno
+  ){
+    log.info("delete | replyDelete-----------------------------");
+
+    replyService.delete(rno);
+
+    return Map.of("result", rno);
+  }
+
+  //modify
+  @PutMapping("modify/{rno}")
+  public Map<String, Integer> modify(
+    @RequestBody ReplyDTO replyDTO
+  ){
+    log.info("modify | replyModify-----------------------------");
+
+    replyService.modify(replyDTO);
+
+    return Map.of("result", replyDTO.getRno());
   }
 }

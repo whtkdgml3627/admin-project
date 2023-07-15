@@ -21,5 +21,6 @@ public class ReplyDTO {
   @Builder.Default
   private int gno = 0;                //대댓글처리 번호 0 default설정
   private int step;                   //대댓글 여부 확인
+  private boolean status;             //댓글 삭제여부
   
 }

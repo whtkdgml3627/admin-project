@@ -92,6 +92,16 @@ public class ReplyMapperTests {
     }
   }
 
+  //read test
+  @Test
+  public void testReadOne(){
+    Integer rno = 45;
+
+    log.info("=====================================================================");
+    log.info("=====================================================================");
+    log.info(replyMapper.readOne(rno));
+  }
+
   //delete test
   @Test
   @Transactional

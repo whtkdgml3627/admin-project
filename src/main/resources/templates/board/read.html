@@ -89,6 +89,26 @@
         </div>
       </div>
     </div>
+
+    <div class="modal replyModModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            Reply Modify
+          </div>
+          <div class="modal-body replyModify">
+            <input type="hidden" name="replyer" value="Josanghee">
+            <input type="text" name="reply" class="form-control">
+            <div class="replyModifyVal"></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary btnReplyModify">Reply Modify</button>
+            <button class="btn btn-danger btnDelete">Reply Delete</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/replyAxios.js"></script>
 
@@ -99,13 +119,18 @@
     const {bno, status} = [[${read}]]
     const alertModal = new bootstrap.Modal(document.querySelector(".alertModal"))
     const replyModal = new bootstrap.Modal(document.querySelector(".replyModal"))
+    const replyModModal = new bootstrap.Modal(document.querySelector(".replyModModal"))
     const replyWrap = document.querySelector(".replyWrap")
     const replyPaging = document.querySelector(".replyPaging")
     const replyRegister = document.querySelector(".replyRegister")
     const replyRegister2 = document.querySelector(".replyRegister2")
     const replyGno = replyRegister2.querySelector(".replyGno")
+    const replyModify = document.querySelector(".replyModify")
+    const replyModifyVal = replyModify.querySelector(".replyModifyVal")
     const btnRegister = document.querySelector(".btnRegister")
     const btnRegister2 = document.querySelector(".btnRegister2")
+    const btnReplyModify = document.querySelector(".btnReplyModify")
+    const btnDelete = document.querySelector(".btnDelete")
 
     //삭제된 게시물은 list로 return처리
     if(!status){
@@ -198,6 +223,68 @@
       })
     }, false)
     // /대댓글 등록
+
+    //댓글 수정 모달
+    replyWrap.addEventListener("click", (e) => {
+      //event 막기
+      e.preventDefault()
+      e.stopPropagation()
+
+      //target 찾기
+      const target = e.target
+      const rno = target.getAttribute("data-rno")
+      //console.log(target.getAttribute("data-reply"))
+
+      getReadOne(rno).then(data => {
+        console.log(data)
+        if(!data.status){
+          alert("삭제된 댓글입니다.")
+          return
+        }
+        replyModModal.show()
+        replyModify.querySelector("input[name=reply]").value = data.reply
+        replyModifyVal.innerHTML = `<input type="hidden" name="rno" value="${rno}">`
+      })
+    }, false)
+    // /댓글 수정 모달
+
+    //댓글 삭제
+    btnDelete.addEventListener("click", (e) => {
+      //event 막기
+      e.preventDefault()
+      e.stopPropagation()
+      //target 찾기
+      const target = e.target
+      const rno = target.closest(".replyModModal").querySelector("input[name=rno]").value
+
+      deleteReply(rno).then(data => {
+        alert(`${rno}번 댓글이 삭제 되었습니다.`)
+        replyModModal.hide()
+        getListDefault()
+      })
+    })
+    // /댓글 삭제
+
+    //댓글 수정
+    btnReplyModify.addEventListener("click", (e) => {
+      //event 막기
+      e.preventDefault()
+      e.stopPropagation()
+      //target 찾기
+      const target = e.target
+      const rno = replyModify.querySelector("input[name=rno]").value
+      const reply = replyModify.querySelector("input[name=reply]").value
+
+      //객체로 만들기
+      const temp = {rno, reply}
+
+      putReply(temp).then(data => {
+        alert(data.result + "번 댓글이 수정 되었습니다.")
+        getListDefault()
+        replyModModal.hide()
+      })
+    })
+    // /댓글 삭제
 
     //댓글 페이징 처리
     replyPaging.addEventListener("click", (e) => {

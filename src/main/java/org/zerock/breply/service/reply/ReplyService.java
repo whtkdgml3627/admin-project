@@ -13,5 +13,14 @@ public interface ReplyService {
 
   //register
   Integer register(ReplyDTO replyDTO);
+
+  //read
+  ReplyDTO readOne(Integer rno);
+
+  //delete
+  void delete(Integer rno);
+
+  //modify
+  void modify(ReplyDTO replyDTO);
   
 }

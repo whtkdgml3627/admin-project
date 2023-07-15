@@ -103,5 +103,23 @@ public class ReplyServiceImpl implements ReplyService {
     }
     return result;
   }
-  
+
+  //read
+  @Override
+  public ReplyDTO readOne(Integer rno) {
+    return replyMapper.readOne(rno);
+  }
+
+  //delete
+  @Override
+  public void delete(Integer rno) {
+    replyMapper.delete(rno);
+  }
+
+  //modify
+  @Override
+  public void modify(ReplyDTO replyDTO) {
+    replyMapper.modify(replyDTO);
+  }
+
 }
