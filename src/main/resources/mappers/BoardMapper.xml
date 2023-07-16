@@ -14,7 +14,7 @@
     on r.bno = b.bno
     left outer join tbl_board_image pi
     on pi.bno = b.bno
-    where b.bno > 0 and status = true and (pi.ord = 0 or pi.ord is null)
+    where b.bno > 0 and b.status = true and (pi.ord = 0 or pi.ord is null)
     <if test="keyword != null and types != null">
       <trim prefix="and (" prefixOverrides="or" suffix=")">
         <foreach collection="types" item="type" separator=" OR ">

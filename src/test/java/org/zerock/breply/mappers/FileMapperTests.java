@@ -47,8 +47,8 @@ public class FileMapperTests {
     int count = boardMapper.register(registerDTO);
     log.info("insert product count: " + count);
 
-    //게시판 등록 성공시 파일업로드
-    if(count > 0){
+    //게시판 등록 성공과 파일이 등록되었다면 실행
+    if(count > 0 && registerDTO.getFileNames() != null && !registerDTO.getFileNames().isEmpty()){
       //bno 가져오기
       Integer bno = registerDTO.getBno();
       log.info("--------------------------------- bno: " + bno);
@@ -71,7 +71,7 @@ public class FileMapperTests {
       log.info(list);
 
       //파일 등록 실행
-      int countImage = fileMapper.registerImage(list);
+      fileMapper.registerImage(list);
     }
   }
 

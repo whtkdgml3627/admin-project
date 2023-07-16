@@ -8,3 +8,8 @@ CREATE TABLE tbl_board_image (
 ;
 
 select * from tbl_board_image;
+
+delete from tbl_board_image where bno = 720915;
+
+insert into tbl_board_image (uuid, file_name, bno, ord)
+values ('1', 'aa.jpg', 720909, 0);
