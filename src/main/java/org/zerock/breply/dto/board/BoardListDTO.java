@@ -22,4 +22,5 @@ public class BoardListDTO {
   private LocalDateTime dueDate; //등록일
   private int replycnt;   //댓글수
   private int viewcnt;    //조회수
+  private String fileName;  //파일명
 }

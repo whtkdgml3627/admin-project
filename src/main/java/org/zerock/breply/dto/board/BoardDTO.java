@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,5 +20,7 @@ public class BoardDTO {
   private String dueDate;     //등록일
   private String updateDate;  //수정일
   private boolean status;     //상태여부
+  
+  private List<String> fileNames; //파일업로드 파일명저장
   
 }

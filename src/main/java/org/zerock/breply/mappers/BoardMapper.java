@@ -1,6 +1,7 @@
 package org.zerock.breply.mappers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Select;
 import org.zerock.breply.dto.board.BoardDTO;
@@ -10,24 +11,24 @@ import org.zerock.breply.dto.paging.PageRequestDTO;
 
 public interface BoardMapper {
 
-  //list
+  //board list
   List<BoardListDTO> getList(PageRequestDTO pageRequestDTO);
-  //count
+  //board count
   long listCount(PageRequestDTO pageRequestDTO);
 
-  //register
+  //board register
   int register(BoardRegisterDTO boardRegisterDTO);
 
-  //read
+  //board read
   BoardDTO getOne(Integer bno);
 
-  //delete
+  //board delete
   int delete(Integer bno);
 
-  //modify
+  //board modify
   int modify(BoardDTO boardDTO);
 
-  //viewcnt
+  //board viewcnt
   int viewCount(Integer bno);
 
   //DB연결 시간 체크

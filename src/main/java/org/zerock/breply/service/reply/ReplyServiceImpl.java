@@ -24,8 +24,8 @@ public class ReplyServiceImpl implements ReplyService {
   public PageResponseDTO<ReplyDTO> getList(
     Integer bno, PageRequestDTO pageRequestDTO
   ) {
-    //20개씩 불러오게 사이즈 조정
-    pageRequestDTO.setSize(10);
+    //30개씩 불러오게 사이즈 조정
+    pageRequestDTO.setSize(30);
 
     //total
     int total = replyMapper.getBnoCount(bno);

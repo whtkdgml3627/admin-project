@@ -7,11 +7,14 @@
 
   <!-- list -->
   <select id="getList" resultType="BoardListDTO">
-    select b.bno, b.title, b.writer, b.dueDate, count(r.rno) as replycnt, b.viewcnt
+    select b.bno, b.title, b.writer, b.dueDate, count(r.rno) as replycnt,
+           b.viewcnt, group_concat(distinct pi.uuid,'_',pi.file_name) as fileName
     from tbl_board b
     left join tbl_reply r
     on r.bno = b.bno
-    where b.bno > 0 and status = true
+    left outer join tbl_board_image pi
+    on pi.bno = b.bno
+    where b.bno > 0 and status = true and (pi.ord = 0 or pi.ord is null)
     <if test="keyword != null and types != null">
       <trim prefix="and (" prefixOverrides="or" suffix=")">
         <foreach collection="types" item="type" separator=" OR ">
@@ -83,6 +86,9 @@
     insert into tbl_board
     (title, content, writer)
     values (#{title}, #{content}, #{writer})
+    <selectKey resultType="int" keyProperty="bno" order="AFTER">
+      select last_insert_id()
+    </selectKey>
   </insert>
 
   <!-- read -->
