@@ -1,5 +1,14 @@
 package org.zerock.breply.dto.file;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class FileUploadDTO {
   //변수
   private String uuid;      //pk
