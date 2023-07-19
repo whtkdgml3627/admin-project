@@ -26,10 +26,18 @@
             <label for="boardWriter" class="form-label">Writer</label>
             <input type="text" name="writer" class="form-control" id="boardWriter">
           </div>
+          <div class="mb-3">
+            <label for="boardFile" class="form-label">File Upload</label>
+            <input type="file" name="upload" multiple class="form-control uploadInput" id="boardFile">
+          </div>
+          <div class="uploadHidden"></div>
         </form>
         <div class="button_wrap">
           <button type="button" class="btn btn-primary btnAdd">Register</button>
           <a href="/board/list" class="btn btn-danger">Cancel</a>
+        </div>
+        <div class="uploadWrap">
+          <ul class="uploadUL"></ul>
         </div>
       </div>
     </div>
@@ -44,25 +52,99 @@
         </div>
       </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </div>
 
   <script layout:fragment="script" th:inline="javascript">
     const modalView = new bootstrap.Modal(document.querySelector(".modal"))
     const modalPop = document.querySelector(".modal .modal-body")
     const btnAdd = document.querySelector(".btnAdd")
+    const uploadInput = document.querySelector(".uploadInput")
+    const uploadUL = document.querySelector(".uploadUL")
+    const uploadHidden = document.querySelector(".uploadHidden")
+
+    //파일 업로드
+    uploadInput.addEventListener("change", e => {
+
+      //file 없으면 리턴
+      if(!uploadInput.files || uploadInput.files.length === 0) {
+        return
+      }
+      //form data
+      const formData = new FormData()
+
+      //formData에 파일 넣어주기
+      for(let i = 0; i < uploadInput.files.length; i++) {
+        formData.append("files", uploadInput.files[i])
+      }
+      //console.dir(formData)
+
+      //http header 타입 지정
+      const header = {headers: {"Content-Type": "multipart/form-data"}}
+
+      //파일 업로드 axios 호출
+      axios.post("http://localhost:8080/api/files/upload", formData, header).then(res => {
+        const result = res.data
+        //console.log(result)
+        showProducts(result)
+      })
+    })
+
+    //파일 보여주기
+    const showProducts = (arr) => {
+      let str = ""
+      for (const uploadFile of arr){
+        //console.log(uploadFile)
+        //구조 분해 할당
+        const {fileName,link,uuid} = uploadFile
+        console.log(uploadFile)
+        str += `
+        <li data-uuid="${uuid}" data-fileName="${fileName}">
+          <a href="http://localhost/${uuid}_${fileName}" target="_blank">
+            <img src="http://localhost/${link}"/>
+          </a>
+          <p>${fileName}</p>
+          <button class="btn btn-danger" onclick="javascript:removeFile(event, '${uuid}', '${fileName}')">X</button>
+        </li>`
+      }
+      //여러번 업로드 할 수 있으니 +=로 계속 추가
+      uploadUL.innerHTML += str
+    }
+
+    // /파일 업로드
+
     //등록버튼 클릭
     btnAdd.addEventListener("click", e => {
       //console.log(frm.title.value);
-      if(frm.title.value == "") {
+      if(frm.title.value === "") {
         modalPop.innerHTML = "제목을 입력해주세요."
         modalView.show()
-      }else if(frm.content.value == "") {
+      }else if(frm.content.value === "") {
         modalPop.innerHTML = "내용을 입력해주세요."
         modalView.show()
-      }else if(frm.writer.value == "") {
+      }else if(frm.writer.value === "") {
         modalPop.innerHTML = "작성자를 입력해주세요."
         modalView.show()
+      }else if(!uploadInput.files || uploadInput.files.length === 0){
+        modalPop.innerHTML = "파일을 등록 해주세요."
+        modalView.show()
       }else {
+        //li 전부 셀렉트
+        const liArr = uploadUL.querySelectorAll("li")
+
+        //li개수만큼 for문 돌려서 input hidden 추가
+        let str = ""
+        for(let liObj of liArr) {
+          //console.log(liObj)
+          const uuid = liObj.getAttribute("data-uuid")
+          const fileName = liObj.getAttribute("data-filename")
+          //console.log(uuid, " / "+fileName)
+          //console.log("---------------------------------")
+          str += `<input type="hidden" name="fileNames" value="${uuid}_${fileName}">`
+        }
+
+        uploadHidden.innerHTML += str
         frm.submit()
       }
     }, false)

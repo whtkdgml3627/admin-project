@@ -75,10 +75,10 @@
     //수정버튼 클릭
     btnAdd.addEventListener("click", e => {
       //console.log(frm.title.value);
-      if(frm.title.value == "") {
+      if(frm.title.value === "") {
         alertModalPop.innerHTML = "제목을 입력해주세요."
         alertModal.show()
-      }else if(frm.content.value == "") {
+      }else if(frm.content.value === "") {
         alertModalPop.innerHTML = "내용을 입력해주세요."
         alertModal.show()
       }else {

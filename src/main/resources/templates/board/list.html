@@ -10,8 +10,8 @@
 <body>
   
   <div class="container-fluid pt-4 px-4" layout:fragment="content">
-    <!--/* [[${boardList}]]
-    <div>[[${pageRequestDTO}]]</div> */-->
+    <!--/* [[${boardList}]] */-->
+    <div>[[${pageRequestDTO}]]</div>
     <div class="col-sm-12 col-xl-12">
       <div class="bg-light rounded h-100 p-4">
         <h2 class="mb-3">Board List</h2>
@@ -57,7 +57,11 @@
               <td>
                 <div class="board_title">
                   <div class="ellipsis">
-                    <a th:href="@{|/board/read/${list.bno}?${pageRequestDTO.link}|}">[[${list.title}]]</a>
+                    <a th:href="@{|/board/read/${list.bno}?${pageRequestDTO.link}|}">
+                      <img th:if="${list.fileName}" th:src="|http://localhost/s_${list.fileName}|" />
+                      <img th:unless="${list.fileName}" th:src="|http://localhost/noimage.png|" width="80" />
+                      <span style="margin-left: 5px;">[[${list.title}]]</span>
+                    </a>
                   </div>
                   <span>([[${list.replycnt}]])</span>
                 </div>

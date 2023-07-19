@@ -21,7 +21,7 @@ import java.util.UUID;
 @RestController
 @Log4j2
 @RequiredArgsConstructor
-@RequestMapping("/files")
+@RequestMapping("/api/files/")
 public class FileController {
 
   //custom 예외처리
@@ -36,7 +36,7 @@ public class FileController {
   private String uploadPath;
 
   //file upload
-  @PostMapping("/upload")
+  @PostMapping("upload")
   public List<FileUploadDTO> upload(MultipartFile[] files){
     //파일 없을 경우
     if(files == null || files.length == 0){
@@ -54,9 +54,9 @@ public class FileController {
       //파일 크기
       long size = file.getSize();
 
-      log.info("-----------------File Upload-----------------");
-      log.info("fileName: " + fileName);
-      log.info("size: " + size);
+//      log.info("-----------------File Upload-----------------");
+//      log.info("fileName: " + fileName);
+//      log.info("size: " + size);
 
       //uuid(pk) 생성
       String uuidStr = UUID.randomUUID().toString();

@@ -303,4 +303,11 @@ li {
 }
 
 .board_list {table-layout: fixed;}
+.board_list td {vertical-align: middle}
+.uploadWrap .uploadUL {display: flex;margin: 0;padding: 0;}
+.uploadWrap .uploadUL li {position: relative;padding: 0 15px;box-sizing: border-box;}
+.uploadWrap .uploadUL li:first-child {padding-left: 0;}
+.uploadWrap .uploadUL li a {display: block; height: 80px;text-align: center;}
+.uploadWrap .uploadUL li p {margin-top: 5px;}
+.uploadWrap .uploadUL li button {position: absolute;right: 12px;top: -15px;padding: 1px 4px;}
 .ellipsis {overflow:hidden;text-overflow:ellipsis;display:inline-block;white-space: nowrap;max-width: 90%;padding: 0 10px;box-sizing: border-box;vertical-align: middle;}
