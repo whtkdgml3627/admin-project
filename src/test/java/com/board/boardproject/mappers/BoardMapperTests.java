@@ -48,7 +48,7 @@ public class BoardMapperTests {
   @Test
   public void testBoardGetOne(){
 
-    Integer bno = 720906;
+    Integer bno = 720919;
 
     log.info("=====================================================================");
     log.info("=====================================================================");

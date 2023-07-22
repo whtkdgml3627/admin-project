@@ -17,6 +17,7 @@ public class BoardListDTO {
   //변수
   private Integer bno;    //pk
   private String title;   //제목
+  private String content; //내용
   private String writer;  //작성자
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDateTime dueDate; //등록일

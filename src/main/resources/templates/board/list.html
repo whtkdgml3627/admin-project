@@ -10,8 +10,8 @@
 <body>
   
   <div class="container-fluid pt-4 px-4" layout:fragment="content">
-    <!--/* [[${boardList}]] */-->
-    <div>[[${pageRequestDTO}]]</div>
+    <!--/* [[${boardList}]]
+    <div>[[${pageRequestDTO}]]</div> */-->
     <div class="col-sm-12 col-xl-12">
       <div class="bg-light rounded h-100 p-4">
         <h2 class="mb-3">Board List</h2>
@@ -24,8 +24,9 @@
               <option value="">선택해주세요</option>
               <option value="t" th:selected="${pageRequestDTO.type == 't'}">제목</option>
               <option value="c" th:selected="${pageRequestDTO.type == 'c'}">내용</option>
-              <option value="w" th:selected="${pageRequestDTO.type == 'w'}">작성자 </option>
-              <option value="tc" th:selected="${pageRequestDTO.type == 'tc'}">제목+내용 </option>
+              <option value="w" th:selected="${pageRequestDTO.type == 'w'}">작성자</option>
+              <option value="tc" th:selected="${pageRequestDTO.type == 'tc'}">제목+내용</option>
+              <option value="tcw" th:selected="${pageRequestDTO.type == 'tcw'}">제목+내용+작성자</option>
             </select>
             <input type="text" name="keyword" class="form-control mb-3" placeholder="검색어를 입력 해주세요." th:value="${pageRequestDTO.keyword}">
             <div class="button_wrap">

@@ -13,4 +13,8 @@
     </foreach>
   </insert>
 
+  <delete id="deleteImage">
+    delete from tbl_board_image where bno = #{bno}
+  </delete>
+
 </mapper>

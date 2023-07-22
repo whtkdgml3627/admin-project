@@ -5,9 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.board.boardproject.dto.file.FileUploadDTO;
 
@@ -16,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -100,6 +99,32 @@ public class FileController {
     }//end for
 
     return fileList;
+  }
+
+  //file remove
+  @DeleteMapping("remove/{fileName}")
+  public Map<String, String> removeFile(
+    @PathVariable("fileName") String fileName
+  ){
+    log.info("File Remove...........................................");
+    log.info(fileName);
+
+    File originFile = new File(uploadPath, fileName);
+
+    try {
+
+      String mimeType = Files.probeContentType(originFile.toPath());
+      if(mimeType.startsWith("image")){
+        File thumbFile = new File(uploadPath,"s_"+fileName);
+        thumbFile.delete();
+      }
+      originFile.delete();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return Map.of("result", "success");
   }
 
 }

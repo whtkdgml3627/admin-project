@@ -45,7 +45,7 @@ public class BoardServiceTests {
   //read test
   @Test
   public void testBoardGetOne(){
-    Integer bno = 720905;
+    Integer bno = 720919;
     
     log.info("=====================================================================");
     log.info("=====================================================================");

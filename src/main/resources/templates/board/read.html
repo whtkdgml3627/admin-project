@@ -21,6 +21,18 @@
         <div class="alert alert-light" role="alert" style="min-height: 100px;">[[${read.content}]]</div>
         <h4 class="mb-4">Writer</h4>
         <div class="alert alert-light" role="alert">[[${read.writer}]]</div>
+        <th:block th:if="${read.fileNames.size()}">
+        <h4 class="mb-4">File</h4>
+        <div class="uploadWrap mb-3">
+          <ul class="uploadUL">
+            <li th:each="list: ${read.fileNames}">
+              <a th:href="@{|http://localhost/${list}|}" target="_blank" style="height: 100px;">
+                <img th:src="|http://localhost/${list}|" height="100"/>
+              </a>
+            </li>
+          </ul>
+        </div>
+        </th:block>
         <h4 class="mb-4">Date</h4>
         <div class="alert alert-light" role="alert">[[${read.updateDate}]]</div>
         <div class="button_wrap">

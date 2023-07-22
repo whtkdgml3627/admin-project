@@ -27,7 +27,24 @@
             <label for="boardWriter" class="form-label">Writer</label>
             <input type="text" name="writer" class="form-control" id="boardWriter" th:value="${modify.writer}" readonly style="cursor: default;">
           </div>
+          <div class="mb-4">
+            <label for="boardFile" class="form-label">File Upload</label>
+            <input type="file" name="upload" multiple class="form-control uploadInput" id="boardFile">
+          </div>
+          <div class="uploadHidden"></div>
         </form>
+          <div class="uploadWrap mb-3">
+            <ul class="uploadUL">
+              <th:block th:each="list: ${modify.fileNames}">
+              <li th:data-originName="${list}">
+                <a th:href="@{|http://localhost/${list}|}" target="_blank" style="height: 100px;">
+                  <img th:src="|http://localhost/${list}|" height="100"/>
+                </a>
+                <button class="btn btn-danger" th:onclick="removeFile(event, [[${list}]])">X</button>
+              </li>
+              </th:block>
+            </ul>
+          </div>
         <div class="button_wrap">
           <button type="button" class="btn btn-primary btnAdd">Modify</button>
           <button type="button" class="btn btn-info text-white btnDelete">Delete</button>
@@ -60,6 +77,9 @@
       </div>
       </form>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/file.js"></script>
   </div>
 
   <script layout:fragment="script" th:inline="javascript">
@@ -72,6 +92,40 @@
     const btnDelete = document.querySelector(".btnDelete")
     const btnDeleteModal = document.querySelector(".btnDeleteModal")
     const actionForm = document.querySelector(".actionForm")
+    const uploadInput = document.querySelector(".uploadInput")
+    const uploadUL = document.querySelector(".uploadUL")
+    const uploadHidden = document.querySelector(".uploadHidden")
+
+    //파일 업로드
+
+    //파일 업로드
+    uploadInput.addEventListener("change", e => {
+
+      //file 없으면 리턴
+      if(!uploadInput.files || uploadInput.files.length === 0) {
+        return
+      }
+      //form data
+      const formData = new FormData()
+
+      //formData에 파일 넣어주기
+      for(let i = 0; i < uploadInput.files.length; i++) {
+        formData.append("files", uploadInput.files[i])
+      }
+      //console.dir(formData)
+
+      //http header 타입 지정
+      const header = {headers: {"Content-Type": "multipart/form-data"}}
+
+      //파일 업로드 axios 호출
+      axios.post("http://localhost:8080/api/files/upload", formData, header).then(res => {
+        const result = res.data
+        //console.log(result)
+        showProducts(result)
+      })
+    })
+    // /파일 업로드
+
     //수정버튼 클릭
     btnAdd.addEventListener("click", e => {
       //console.log(frm.title.value);
@@ -82,6 +136,20 @@
         alertModalPop.innerHTML = "내용을 입력해주세요."
         alertModal.show()
       }else {
+        //li 전부 셀렉트
+        const liArr = uploadUL.querySelectorAll("li")
+
+        //li개수만큼 for문 돌려서 input hidden 추가
+        let str = ""
+        for(let liObj of liArr) {
+          //console.log(liObj)
+          const originName = liObj.getAttribute("data-originname")
+          //console.log(uuid, " / "+fileName)
+          //console.log("---------------------------------")
+          str += `<input type="hidden" name="fileNames" value="${originName}">`
+        }
+
+        uploadHidden.innerHTML += str
         //수정처리
         frm.submit()
       }

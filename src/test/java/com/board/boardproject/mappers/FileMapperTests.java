@@ -30,7 +30,7 @@ public class FileMapperTests {
 
   @Test
   @Transactional
-  @Commit
+  //@Commit
   public void testFileUpload(){
     //등록
     BoardRegisterDTO registerDTO = BoardRegisterDTO.builder()
@@ -73,6 +73,17 @@ public class FileMapperTests {
       //파일 등록 실행
       fileMapper.registerImage(list);
     }
+  }
+
+  @Test
+  @Transactional
+  //@Commit
+  public void testFileDelete(){
+    Integer bno = 720919;
+
+    log.info("=====================================================================");
+    log.info("=====================================================================");
+    log.info(fileMapper.deleteImage(bno));
   }
 
 }
